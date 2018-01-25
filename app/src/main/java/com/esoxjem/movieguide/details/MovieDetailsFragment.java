@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +75,8 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView, 
     FloatingActionButton favorite;
     @BindView(R.id.toolbar)
     @Nullable Toolbar toolbar;
+    @BindView(R.id.rate_movie)
+    RatingBar ratingForMovie;
 
     private Movie movie;
     private Unbinder unbinder;
@@ -114,6 +117,19 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView, 
                 onWatchedClick();
             }
         });
+
+        ratingForMovie.setVisibility(View.INVISIBLE);
+
+        ratingForMovie.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                Toast.makeText(getContext(),
+                        "Rating changed, current rating "+ ratingBar.getRating(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         setToolbar();
         return rootView;
     }
@@ -301,6 +317,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView, 
 
     private void onWatchedClick()
     {
+        ratingForMovie.setVisibility(View.VISIBLE);
         Toast.makeText(getActivity().getBaseContext(),"Added to Already Watched List",Toast.LENGTH_LONG).show();
         watched.setVisibility(View.INVISIBLE);
         //movieDetailsPresenter.onWatchedClick(movie);
